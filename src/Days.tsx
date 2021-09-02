@@ -20,6 +20,7 @@ export const Days = () => {
     font-style: normal;
     letter-spacing: 0em;
     text-align: left;
+    color: #595757;
   `;
 
   const renderDays = () => {

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const Square = () => {
+export const Squares = () => {
   const Box = styled("div")`
     border-right: 1px solid #898989;
     border-bottom: 1px solid #898989;
