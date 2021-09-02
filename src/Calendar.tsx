@@ -50,30 +50,30 @@ export const Calendar = () => {
     return years.map((year) => ({
       key: year.key,
       value: year.value,
-      text: `${year.value}年`,
+      text: year.value,
     }));
   };
 
   const months = [
-    { key: "Jan", value: 1 },
-    { key: "Feb", value: 2 },
-    { key: "Mar", value: 3 },
-    { key: "Apr", value: 4 },
+    { key: "January", value: 1 },
+    { key: "February", value: 2 },
+    { key: "March", value: 3 },
+    { key: "April", value: 4 },
     { key: "May", value: 5 },
-    { key: "Jun", value: 6 },
-    { key: "Jul", value: 7 },
-    { key: "Aug", value: 8 },
-    { key: "Sep", value: 9 },
-    { key: "Oct", value: 10 },
-    { key: "Nov", value: 11 },
-    { key: "Dec", value: 12 },
+    { key: "June", value: 6 },
+    { key: "July", value: 7 },
+    { key: "August", value: 8 },
+    { key: "September", value: 9 },
+    { key: "October", value: 10 },
+    { key: "November", value: 11 },
+    { key: "December", value: 12 },
   ];
 
   const monthOptions = () => {
     return months.map((month) => ({
       key: month.key,
       value: month.value,
-      text: `${month.value}月`,
+      text: month.key,
     }));
   };
 
