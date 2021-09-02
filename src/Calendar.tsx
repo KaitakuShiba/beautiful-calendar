@@ -40,6 +40,7 @@ export const Calendar = () => {
   `;
 
   const currentYear = new Date().getFullYear();
+  const currenMonth = new Date().getMonth();
 
   const yearOptions = () => {
     const years = [
@@ -53,22 +54,22 @@ export const Calendar = () => {
     }));
   };
 
-  const monthOptions = () => {
-    const months = [
-      { key: "jan", value: 1 },
-      { key: "feb", value: 2 },
-      { key: "mar", value: 3 },
-      { key: "apr", value: 4 },
-      { key: "may", value: 5 },
-      { key: "jun", value: 6 },
-      { key: "jul", value: 7 },
-      { key: "aug", value: 8 },
-      { key: "sep", value: 9 },
-      { key: "oct", value: 10 },
-      { key: "nov", value: 11 },
-      { key: "dec", value: 12 },
-    ];
+  const months = [
+    { key: "Jan", value: 1 },
+    { key: "Feb", value: 2 },
+    { key: "Mar", value: 3 },
+    { key: "Apr", value: 4 },
+    { key: "May", value: 5 },
+    { key: "Jun", value: 6 },
+    { key: "Jul", value: 7 },
+    { key: "Aug", value: 8 },
+    { key: "Sep", value: 9 },
+    { key: "Oct", value: 10 },
+    { key: "Nov", value: 11 },
+    { key: "Dec", value: 12 },
+  ];
 
+  const monthOptions = () => {
     return months.map((month) => ({
       key: month.key,
       value: month.value,
@@ -76,11 +77,20 @@ export const Calendar = () => {
     }));
   };
 
+  const findCurrentMonthKey = (
+    objs: Array<{ key: String; value: Number }>,
+    value: Number
+  ) => {
+    return objs.find((obj) => obj.value === value)?.key;
+  };
+
   return (
     <>
       <MonthInfoWrapper>
-        <Number>9</Number>
-        <Year>Sep 2021</Year>
+        <Number>{currenMonth}</Number>
+        <Year>
+          {findCurrentMonthKey(months, currenMonth)} {currentYear}
+        </Year>
       </MonthInfoWrapper>
       <DayOfTheWeek />
       <SquaresWrapper>
