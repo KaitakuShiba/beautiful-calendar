@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { Squares } from "./Square";
 import { DayOfTheWeek } from "./DayOfTheWeek";
 import styled from "@emotion/styled";
-import { Select, Button } from "semantic-ui-react";
+import { Select } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 export const Calendar = () => {
@@ -20,7 +21,7 @@ export const Calendar = () => {
     width: 420px;
   `;
 
-  const Number = styled("div")`
+  const Month = styled("div")`
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -41,6 +42,9 @@ export const Calendar = () => {
 
   const currentYear = new Date().getFullYear();
   const currenMonth = new Date().getMonth();
+
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [selectedMonth, setSelectedMonth] = useState(currenMonth);
 
   const yearOptions = () => {
     const years = [
@@ -78,18 +82,26 @@ export const Calendar = () => {
   };
 
   const findCurrentMonthKey = (
-    objs: Array<{ key: String; value: Number }>,
-    value: Number
+    objs: Array<{ key: string; value: number }>,
+    value: number
   ) => {
     return objs.find((obj) => obj.value === value)?.key;
+  };
+
+  const changeYear = (e: any, data: any) => {
+    setSelectedYear(data.value);
+  };
+
+  const changeMonth = (e: any, data: any) => {
+    setSelectedMonth(data.value);
   };
 
   return (
     <>
       <MonthInfoWrapper>
-        <Number>{currenMonth}</Number>
+        <Month>{selectedMonth}</Month>
         <Year>
-          {findCurrentMonthKey(months, currenMonth)} {currentYear}
+          {findCurrentMonthKey(months, selectedMonth)} {selectedYear}
         </Year>
       </MonthInfoWrapper>
       <DayOfTheWeek />
@@ -100,17 +112,13 @@ export const Calendar = () => {
         placeholder="Select year"
         options={yearOptions()}
         defaultValue={currentYear}
+        onChange={changeYear}
       />
       <Select
         placeholder="Select month"
         options={monthOptions()}
         defaultValue={new Date().getMonth()}
-      />
-      <Button
-        color="yellow"
-        labelPosition="right"
-        icon="right chevron"
-        content="CREATE"
+        onChange={changeMonth}
       />
     </>
   );
