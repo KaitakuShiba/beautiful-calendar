@@ -1,6 +1,11 @@
+import { FC } from "react";
 import styled from "@emotion/styled";
 
-export const Squares = () => {
+interface Props {
+  dates: object;
+}
+
+export const Squares: FC<Props> = (dates) => {
   const Box = styled("div")`
     border-right: 1px solid #898989;
     border-bottom: 1px solid #898989;
@@ -19,30 +24,21 @@ export const Squares = () => {
     position: relative;
   `;
 
-  const renderRowSquares = () => {
-    const rows = [
-      { key: "first", value: 1 },
-      { key: "second", value: 2 },
-      { key: "third", value: 3 },
-      { key: "4th", value: 4 },
-      { key: "5th", value: 5 },
-      { key: "6th", value: 6 },
-      { key: "7th", value: 7 },
-    ];
-    return rows.map((row) => (
-      <Box key={row.key}>
-        <Date key={row.key}>{row.value}</Date>
+  const renderRowSquares = (dates: any) => {
+    const datesArray = dates["dates"]["firstWeekDays"];
+    if (datesArray === undefined) {
+      return <></>;
+    }
+    return datesArray.map((date: number, i: number) => (
+      <Box key={i}>
+        <Date key={i}>{date}</Date>
       </Box>
     ));
   };
 
   return (
     <>
-      <Row>{renderRowSquares()}</Row>
-      <Row>{renderRowSquares()}</Row>
-      <Row>{renderRowSquares()}</Row>
-      <Row>{renderRowSquares()}</Row>
-      <Row>{renderRowSquares()}</Row>
+      <Row>{renderRowSquares(dates)}</Row>
     </>
   );
 };

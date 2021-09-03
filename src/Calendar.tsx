@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Squares } from "./Square";
 import { DayOfTheWeek } from "./DayOfTheWeek";
 import styled from "@emotion/styled";
@@ -41,10 +41,12 @@ export const Calendar = () => {
   `;
 
   const currentYear = new Date().getFullYear();
-  const currenMonth = new Date().getMonth();
+  // 海外では0-11として解釈されるため
+  const currenMonth = new Date().getMonth() + 1;
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedMonth, setSelectedMonth] = useState(currenMonth);
+  const [dates, setDates] = useState({});
 
   const yearOptions = () => {
     const years = [
@@ -89,12 +91,44 @@ export const Calendar = () => {
   };
 
   const changeYear = (e: any, data: any) => {
-    setSelectedYear(data.value);
+    const year = data.value;
+    setSelectedYear(year);
+    calcDate(year, selectedMonth);
   };
 
   const changeMonth = (e: any, data: any) => {
-    setSelectedMonth(data.value);
+    const month = data.value;
+    setSelectedMonth(month);
+    calcDate(selectedYear, month);
   };
+
+  const calcFirstWeekDays = (dayOfTheWeekEnum: number) => {
+    // Sunday - Saturday : 0 - 6
+    // if Starting Sunday(0): [0, 0, 0, 0, 0, 0, 1]
+    // if Starting Wednesday(3): [0, 0, 1, 2, 3, 4, 5]
+    if (dayOfTheWeekEnum === 0) {
+      return [null, null, null, null, null, null, 1];
+    } else {
+      // 月曜日始まりに合わせるため
+      const mondayStartEnum = dayOfTheWeekEnum - 1;
+      const disableDays = Array(mondayStartEnum).fill(null);
+      const enableDays = [...Array(7 - mondayStartEnum)].map((_, i) => i + 1);
+      return disableDays.concat(enableDays);
+    }
+  };
+
+  const calcDate = (year: number, month: number) => {
+    // 日本での表示のために月がずれているので正確な値を出すために戻す
+    const date = new Date(year, month - 1);
+    const firstWeekDays = calcFirstWeekDays(date.getDay());
+    setDates({ ...dates, firstWeekDays });
+  };
+
+  useEffect(() => {
+    calcDate(currentYear, currenMonth);
+    // TODO: あとでできれば修正
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
@@ -106,7 +140,7 @@ export const Calendar = () => {
       </MonthInfoWrapper>
       <DayOfTheWeek />
       <SquaresWrapper>
-        <Squares />
+        <Squares dates={dates} />
       </SquaresWrapper>
       <Select
         placeholder="Select year"
@@ -117,7 +151,7 @@ export const Calendar = () => {
       <Select
         placeholder="Select month"
         options={monthOptions()}
-        defaultValue={new Date().getMonth()}
+        defaultValue={currenMonth}
         onChange={changeMonth}
       />
     </>
