@@ -47,7 +47,7 @@ export const Squares: FC<Props> = (chunkedDates) => {
       <>
         {dates.map((date: number, i: number) => (
           <Box key={i}>
-            <Date key={i}>{date}</Date>
+            <Date key={i}>{ date }</Date>
           </Box>
         ))}
       </>

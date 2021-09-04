@@ -127,11 +127,16 @@ export const Calendar = () => {
     );
   };
 
-  const chunkedDates = (arr: number[]) => {
+  const chunkedDates = (arr: any) => {
     const res = [];
     const chunkSize = 7;
     for (let i = 0; i < arr.length; i += chunkSize) {
-      const chunk = arr.slice(i, i + chunkSize);
+      let chunk = arr.slice(i, i + chunkSize);
+      if (chunk.length < chunkSize) {
+        while (chunk.length < 7) {
+          chunk.push(null);
+        }
+      }
       res.push(chunk);
     }
     return res;
