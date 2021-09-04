@@ -117,11 +117,37 @@ export const Calendar = () => {
     }
   };
 
+  const createSecondWeekDates = (
+    firstDayOnSecondWeek: number,
+    daysCountInThisMonth: number
+  ) => {
+    return Array.from(
+      { length: daysCountInThisMonth - firstDayOnSecondWeek + 1 },
+      (_, i) => firstDayOnSecondWeek + i
+    );
+  };
+
+  const chunkedDates = (arr: number[]) => {
+    const res = [];
+    const chunkSize = 7;
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      const chunk = arr.slice(i, i + chunkSize);
+      res.push(chunk);
+    }
+    return res;
+  };
+
   const calcDate = (year: number, month: number) => {
     // 日本での表示のために月がずれているので正確な値を出すために戻す
-    const date = new Date(year, month - 1);
-    const firstWeekDays = calcFirstWeekDays(date.getDay());
-    setDates({ ...dates, firstWeekDays });
+    const firstWeekDays = calcFirstWeekDays(new Date(year, month - 1).getDay());
+    const firstDayOnSecondWeek = firstWeekDays[firstWeekDays.length - 1] + 1;
+    const daysCountInThisMonth = new Date(year, month, 0).getDate();
+    const totalDays = firstWeekDays.concat(
+      createSecondWeekDates(firstDayOnSecondWeek, daysCountInThisMonth)
+    );
+
+    const chunked = chunkedDates(totalDays);
+    setDates({ ...dates, chunked });
   };
 
   useEffect(() => {
@@ -140,7 +166,7 @@ export const Calendar = () => {
       </MonthInfoWrapper>
       <DayOfTheWeek />
       <SquaresWrapper>
-        <Squares dates={dates} />
+        <Squares chunkedDates={dates} />
       </SquaresWrapper>
       <Select
         placeholder="Select year"

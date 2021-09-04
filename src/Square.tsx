@@ -2,10 +2,10 @@ import { FC } from "react";
 import styled from "@emotion/styled";
 
 interface Props {
-  dates: object;
+  chunkedDates: any;
 }
 
-export const Squares: FC<Props> = (dates) => {
+export const Squares: FC<Props> = (chunkedDates) => {
   const Box = styled("div")`
     border-right: 1px solid #898989;
     border-bottom: 1px solid #898989;
@@ -20,25 +20,39 @@ export const Squares: FC<Props> = (dates) => {
 
   const Date = styled("div")`
     top: 40px;
-    left: 45px;
+    left: 40px;
     position: relative;
   `;
 
-  const renderRowSquares = (dates: any) => {
-    const datesArray = dates["dates"]["firstWeekDays"];
-    if (datesArray === undefined) {
-      return <></>;
+  const datesArray = () => {
+    if (!chunkedDates["chunkedDates"]["chunked"]) {
+      return [[]];
     }
-    return datesArray.map((date: number, i: number) => (
-      <Box key={i}>
-        <Date key={i}>{date}</Date>
-      </Box>
-    ));
+
+    return chunkedDates["chunkedDates"]["chunked"];
   };
 
-  return (
-    <>
-      <Row>{renderRowSquares(dates)}</Row>
-    </>
-  );
+  const renderRows = () => {
+    return (
+      <>
+        {datesArray().map((dates: any, i: number) => (
+          <Row key={i}>{renderSquares(dates)}</Row>
+        ))}
+      </>
+    );
+  };
+
+  const renderSquares = (dates: any) => {
+    return (
+      <>
+        {dates.map((date: number, i: number) => (
+          <Box key={i}>
+            <Date key={i}>{date}</Date>
+          </Box>
+        ))}
+      </>
+    );
+  };
+
+  return <>{renderRows()}</>;
 };
