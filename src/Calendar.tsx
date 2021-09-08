@@ -26,12 +26,14 @@ export const Calendar = () => {
     flex-flow: column;
   `;
 
-  const PrintOutButtonWrapper = styled("div")``;
+  const PrintOutButtonWrapper = styled("div")`
+    cursor: pointer;
+  `;
 
   const Title = styled("div")`
     font-family: Roboto;
     font-style: normal;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 36px;
     line-height: 42px;
     letter-spacing: 0.05em;
@@ -43,7 +45,7 @@ export const Calendar = () => {
   const SubTitle = styled("div")`
     font-family: Roboto;
     font-style: normal;
-    font-weight: normal;
+    font-weight: bold;
     font-size: 20px;
     line-height: 23px;
     letter-spacing: 0.05em;
@@ -238,7 +240,13 @@ export const Calendar = () => {
   };
 
   const printCalendar = () => {
-    printJS("capture", "html");
+    printJS({
+      printable: "capture",
+      documentTitle: "",
+      type: "html",
+      targetStyles: ["*"],
+      style: "@page{ size: auto; margin: 0mm; }",
+    });
   };
 
   const backgroundImageStyle = {
@@ -247,8 +255,8 @@ export const Calendar = () => {
   };
 
   const buttonStyle = {
-    width: "140.73px",
-    height: "33.43px",
+    width: "211.1px",
+    height: "50.15px",
   };
 
   useEffect(() => {
