@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 
 export const DayOfTheWeek = () => {
   const Wrapper = styled("div")`
-    width: 60px;
-    height: 60px;
+    width: 102.5px;
+    height: 56.5px;
   `;
 
   const Row = styled("div")`
@@ -13,7 +13,7 @@ export const DayOfTheWeek = () => {
 
   const Day = styled("div")`
     top: 40px;
-    left: 45px;
+    left: 102px;
     position: relative;
     font-family: Roboto;
     font-size: 14px;

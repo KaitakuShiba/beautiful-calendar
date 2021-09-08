@@ -9,8 +9,8 @@ export const Squares: FC<Props> = (chunkedDates) => {
   const Box = styled("div")`
     border-right: 1px solid #898989;
     border-bottom: 1px solid #898989;
-    width: 60px;
-    height: 60px;
+    width: 102.5px;
+    height: 102.5px;
   `;
 
   const Row = styled("div")`
@@ -19,8 +19,8 @@ export const Squares: FC<Props> = (chunkedDates) => {
   `;
 
   const Date = styled("div")`
-    top: 40px;
-    left: 40px;
+    top: 83px;
+    left: 84px;
     position: relative;
   `;
 
@@ -47,7 +47,7 @@ export const Squares: FC<Props> = (chunkedDates) => {
       <>
         {dates.map((date: number, i: number) => (
           <Box key={i}>
-            <Date key={i}>{ date }</Date>
+            <Date key={i}>{date}</Date>
           </Box>
         ))}
       </>

@@ -5,11 +5,29 @@ import styled from "@emotion/styled";
 import { Dropdown, Menu } from "semantic-ui-react";
 import printJS from "print-js";
 import "semantic-ui-css/semantic.min.css";
-import { ReactComponent as WaveImg } from "./assets/images/wave.svg";
-import { renderToStaticMarkup } from "react-dom/server";
 import PrintOutButton from "./assets/images/print.png";
+import WaveImg from "./assets/images/wave.png";
 
 export const Calendar = () => {
+  const ButtonsWrapper = styled("span")`
+    display: flex;
+    margin-bottom: 33px;
+  `;
+
+  const SelectYearWrapper = styled("span")`
+    margin-right: 20px;
+    display: flex;
+    flex-flow: column;
+  `;
+
+  const SelectMonthWrapper = styled("span")`
+    margin-right: 20px;
+    display: flex;
+    flex-flow: column;
+  `;
+
+  const PrintOutButtonWrapper = styled("div")``;
+
   const Title = styled("div")`
     font-family: Roboto;
     font-style: normal;
@@ -18,8 +36,8 @@ export const Calendar = () => {
     line-height: 42px;
     letter-spacing: 0.05em;
     background-color: transparent;
-    margin-top: 74px;
     margin-left: 69px;
+    color: #ffffff;
   `;
 
   const SubTitle = styled("div")`
@@ -30,14 +48,23 @@ export const Calendar = () => {
     line-height: 23px;
     letter-spacing: 0.05em;
     color: #595757;
-    margin-left: 66px;
+    margin-bottom: 23px;
+  `;
+
+  const SelectTitle = styled("div")`
+    font-family: Roboto;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 18.75px;
+    letter-spacing: 3%;
+    color: #727171;
   `;
 
   const SquaresWrapper = styled("div")`
-    margin: 0 20px 20px 20px;
+    margin: 0 36px 20px 36px;
     border-left: 1px solid #898989;
     border-top: 1px solid #898989;
-    width: 420px;
+    width: 718px;
   `;
 
   const MonthInfoWrapper = styled("div")`
@@ -45,11 +72,10 @@ export const Calendar = () => {
     justify-content: space-between;
     flex-direction: row;
     margin: 0 20px;
-    width: 420px;
+    width: 718px;
   `;
 
   const Month = styled("div")`
-    /* font-family: Roboto; */
     font-family: "ヒラギノ丸ゴ Pro W4", "ヒラギノ丸ゴ Pro",
       "Hiragino Maru Gothic Pro", "ヒラギノ角ゴ Pro W3",
       "Hiragino Kaku Gothic Pro", "HG丸ｺﾞｼｯｸM-PRO", "HGMaruGothicMPRO";
@@ -61,7 +87,6 @@ export const Calendar = () => {
   `;
 
   const Year = styled("div")`
-    /* font-family: Roboto; */
     font-family: "ヒラギノ丸ゴ Pro W4", "ヒラギノ丸ゴ Pro",
       "Hiragino Maru Gothic Pro", "ヒラギノ角ゴ Pro W3",
       "Hiragino Kaku Gothic Pro", "HG丸ｺﾞｼｯｸM-PRO", "HGMaruGothicMPRO";
@@ -74,17 +99,26 @@ export const Calendar = () => {
   `;
 
   const Left = styled("div")`
-    margin: 10px;
+    padding-top: 320px;
+    margin-left: 66px;
   `;
 
-  const Right = styled("div")`
-    border: 1px solid #b5b5b6;
-    margin: 10px;
-    background-color: white;
-  `;
+  const Right = styled("div")``;
 
   const Content = styled("div")`
     display: flex;
+  `;
+
+  const CalendarDescription = styled("div")`
+    text-align: right;
+    font-family: Roboto;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 14px;
+    letter-spacing: 0.03em;
+    color: #ffffff;
+    margin-right: 10px;
   `;
 
   const currentYear = new Date().getFullYear();
@@ -93,6 +127,7 @@ export const Calendar = () => {
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [selectedMonth, setSelectedMonth] = useState(currenMonth);
+  const [squareWrapperHeight, setSquareWrapperHeight] = useState(0);
   const [dates, setDates] = useState({});
 
   const yearOptions = () => {
@@ -206,14 +241,9 @@ export const Calendar = () => {
     printJS("capture", "html");
   };
 
-  const encodedSvgUrl = encodeURIComponent(renderToStaticMarkup(<WaveImg />));
-
   const backgroundImageStyle = {
-    backgroundImage: `url("data:image/svg+xml,${encodedSvgUrl}")`,
-    width: "100%",
+    backgroundImage: `url(${WaveImg})`,
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    zIndex: 0,
   };
 
   const buttonStyle = {
@@ -227,49 +257,76 @@ export const Calendar = () => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    setSquareWrapperHeight(
+      document.getElementById("squares-wrapper")!.offsetHeight
+    );
+  });
+
+  const CalendarContent = styled("div")`
+    border: 1px solid #b5b5b6;
+    margin: 10px;
+    background-color: white;
+    width: 841px;
+    height: calc(${squareWrapperHeight} + 200px);
+  `;
+
   return (
     <div style={backgroundImageStyle}>
-      <Title>Create your calender.</Title>
-      <Title>FREE</Title>
+      <Title style={{ paddingTop: "74px" }}>Create your calendar.</Title>
+      <Title style={{ paddingTop: "24px" }}>FREE</Title>
       <Content>
         <Left>
-          <SubTitle>Choice your date.</SubTitle>
-          <Menu compact>
-            <Dropdown
-              options={yearOptions()}
-              value={selectedYear}
-              onChange={changeYear}
-              simple
-              item
+          <SubTitle>Select the date.</SubTitle>
+          <ButtonsWrapper>
+            <SelectYearWrapper>
+              <SelectTitle>Year</SelectTitle>
+              <Menu compact>
+                <Dropdown
+                  options={yearOptions()}
+                  value={selectedYear}
+                  onChange={changeYear}
+                  simple
+                  item
+                />
+              </Menu>
+            </SelectYearWrapper>
+            <SelectMonthWrapper>
+              <SelectTitle>Month</SelectTitle>
+              <Menu compact>
+                <Dropdown
+                  options={monthOptions()}
+                  value={selectedMonth}
+                  onChange={changeMonth}
+                  simple
+                  item
+                />
+              </Menu>
+            </SelectMonthWrapper>
+          </ButtonsWrapper>
+          <PrintOutButtonWrapper>
+            <img
+              src={PrintOutButton}
+              style={buttonStyle}
+              onClick={printCalendar}
+              alt="printoutbutton"
             />
-          </Menu>
-          <Menu compact>
-            <Dropdown
-              options={monthOptions()}
-              value={selectedMonth}
-              onChange={changeMonth}
-              simple
-              item
-            />
-          </Menu>
-          <img
-            src={PrintOutButton}
-            style={buttonStyle}
-            onClick={printCalendar}
-            alt="printoutbutton"
-          />
+          </PrintOutButtonWrapper>
         </Left>
-        <Right id="capture">
-          <MonthInfoWrapper>
-            <Month>{selectedMonth}</Month>
-            <Year>
-              {findCurrentMonthKey(months, selectedMonth)} {selectedYear}
-            </Year>
-          </MonthInfoWrapper>
-          <DayOfTheWeek />
-          <SquaresWrapper>
-            <Squares chunkedDates={dates} />
-          </SquaresWrapper>
+        <Right>
+          <CalendarDescription>Print out this preview.</CalendarDescription>
+          <CalendarContent id="capture">
+            <MonthInfoWrapper>
+              <Month>{selectedMonth}</Month>
+              <Year>
+                {findCurrentMonthKey(months, selectedMonth)} {selectedYear}
+              </Year>
+            </MonthInfoWrapper>
+            <DayOfTheWeek />
+            <SquaresWrapper id="squares-wrapper">
+              <Squares chunkedDates={dates} />
+            </SquaresWrapper>
+          </CalendarContent>
         </Right>
       </Content>
     </div>
