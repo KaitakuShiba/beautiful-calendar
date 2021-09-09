@@ -275,7 +275,7 @@ export const Calendar = () => {
     setSquareWrapperHeight(
       document.getElementById("squares-wrapper")!.offsetHeight
     );
-  });
+  }, []);
 
   const CalendarContent = styled("div")`
     border: 1px solid #b5b5b6;
