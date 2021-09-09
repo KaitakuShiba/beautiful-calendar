@@ -12,8 +12,8 @@ export const DayOfTheWeek = () => {
   `;
 
   const Day = styled("div")`
-    top: 40px;
-    left: 102px;
+    top: 38px;
+    left: 100px;
     position: relative;
     font-family: Roboto;
     font-size: 14px;

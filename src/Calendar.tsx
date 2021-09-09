@@ -3,7 +3,8 @@ import { Squares } from "./Square";
 import { DayOfTheWeek } from "./DayOfTheWeek";
 import styled from "@emotion/styled";
 import { Dropdown, Menu } from "semantic-ui-react";
-import printJS from "print-js";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import "semantic-ui-css/semantic.min.css";
 import PrintOutButton from "./assets/images/print.png";
 import WaveImg from "./assets/images/wave.png";
@@ -73,7 +74,7 @@ export const Calendar = () => {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    margin: 0 20px;
+    margin-left: 35px;
     width: 718px;
   `;
 
@@ -114,9 +115,9 @@ export const Calendar = () => {
   const CalendarDescription = styled("div")`
     text-align: right;
     font-family: Roboto;
-    font-size: 12px;
+    font-size: 18px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: bold;
     line-height: 14px;
     letter-spacing: 0.03em;
     color: #ffffff;
@@ -125,10 +126,10 @@ export const Calendar = () => {
 
   const currentYear = new Date().getFullYear();
   // 海外では0-11として解釈されるため
-  const currenMonth = new Date().getMonth() + 1;
+  const currentMonth = new Date().getMonth() + 1;
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedMonth, setSelectedMonth] = useState(currenMonth);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [squareWrapperHeight, setSquareWrapperHeight] = useState(0);
   const [dates, setDates] = useState({});
 
@@ -240,12 +241,16 @@ export const Calendar = () => {
   };
 
   const printCalendar = () => {
-    printJS({
-      printable: "capture",
-      documentTitle: "",
-      type: "html",
-      targetStyles: ["*"],
-      style: "@page{ size: auto; margin: 0mm; }",
+    const source = document.getElementById("capture") as HTMLElement;
+    html2canvas(source).then((capture) => {
+      const imgData = capture.toDataURL("image/png");
+      const doc = new jsPDF({
+        orientation: "landscape",
+      });
+      const width = doc.internal.pageSize.width;
+      const height = doc.internal.pageSize.height;
+      doc.addImage(imgData, "PNG", 0, 0, width, height);
+      doc.save(`calendar_${currentYear}_${currentMonth}.pdf`);
     });
   };
 
@@ -255,12 +260,12 @@ export const Calendar = () => {
   };
 
   const buttonStyle = {
-    width: "211.1px",
+    width: "230px",
     height: "50.15px",
   };
 
   useEffect(() => {
-    calcDate(currentYear, currenMonth);
+    calcDate(currentYear, currentMonth);
     // TODO: あとでできれば修正
     // eslint-disable-next-line
   }, []);
@@ -322,10 +327,10 @@ export const Calendar = () => {
           </PrintOutButtonWrapper>
         </Left>
         <Right>
-          <CalendarDescription>Print out this preview.</CalendarDescription>
+          <CalendarDescription>Save this preview.</CalendarDescription>
           <CalendarContent id="capture">
             <MonthInfoWrapper>
-              <Month>{selectedMonth}</Month>
+              <Month id="month">{selectedMonth}</Month>
               <Year>
                 {findCurrentMonthKey(months, selectedMonth)} {selectedYear}
               </Year>

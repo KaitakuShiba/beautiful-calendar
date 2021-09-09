@@ -19,8 +19,8 @@ export const Squares: FC<Props> = (chunkedDates) => {
   `;
 
   const Date = styled("div")`
-    top: 83px;
-    left: 84px;
+    top: 80px;
+    left: 80px;
     position: relative;
   `;
 
