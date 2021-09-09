@@ -261,8 +261,8 @@ export const Calendar = () => {
   };
 
   const buttonStyle = {
-    width: "244px",
-    height: "92px",
+    width: "200px",
+    height: "79px",
   };
 
   useEffect(() => {
