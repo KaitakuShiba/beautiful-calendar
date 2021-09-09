@@ -251,7 +251,7 @@ export const Calendar = () => {
 
   const backgroundImageStyle = {
     backgroundImage: `url(${WaveImg})`,
-    backgroundRepeat: "no-repeat",
+    backgroundRepeat: "repeat-x",
   };
 
   const buttonStyle = {
