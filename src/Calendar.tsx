@@ -257,11 +257,12 @@ export const Calendar = () => {
   const backgroundImageStyle = {
     backgroundImage: `url(${WaveImg})`,
     backgroundRepeat: "repeat-x",
+    height: "440px",
   };
 
   const buttonStyle = {
-    width: "230px",
-    height: "50.15px",
+    width: "244px",
+    height: "92px",
   };
 
   useEffect(() => {
