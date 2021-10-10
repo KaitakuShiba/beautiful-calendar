@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { Squares } from "./Square";
 import { DayOfTheWeek } from "./DayOfTheWeek";
 import styled from "@emotion/styled";
-import { Dropdown, Menu } from "semantic-ui-react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
-import "semantic-ui-css/semantic.min.css";
 import PrintOutButton from "./assets/images/print.png";
 import WaveImg from "./assets/images/wave.png";
+import { Constant } from "./Constant";
+import InputLabel from "@mui/material/InputLabel";
+import { FormControl, Select, MenuItem } from "@mui/material";
 
 export const Calendar = () => {
   const ButtonsWrapper = styled("span")`
@@ -52,15 +53,6 @@ export const Calendar = () => {
     letter-spacing: 0.05em;
     color: #595757;
     margin-bottom: 23px;
-  `;
-
-  const SelectTitle = styled("div")`
-    font-family: Roboto;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 18.75px;
-    letter-spacing: 3%;
-    color: #727171;
   `;
 
   const SquaresWrapper = styled("div")`
@@ -132,57 +124,19 @@ export const Calendar = () => {
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [squareWrapperHeight, setSquareWrapperHeight] = useState(0);
   const [dates, setDates] = useState({});
-
-  const yearOptions = () => {
-    const years = [
-      { key: "current", value: currentYear },
-      { key: "nextYear", value: currentYear + 1 },
-    ];
-    return years.map((year) => ({
-      key: year.key,
-      value: year.value,
-      text: year.value,
-    }));
-  };
-
-  const months = [
-    { key: "January", value: 1 },
-    { key: "February", value: 2 },
-    { key: "March", value: 3 },
-    { key: "April", value: 4 },
-    { key: "May", value: 5 },
-    { key: "June", value: 6 },
-    { key: "July", value: 7 },
-    { key: "August", value: 8 },
-    { key: "September", value: 9 },
-    { key: "October", value: 10 },
-    { key: "November", value: 11 },
-    { key: "December", value: 12 },
+  const years = [
+    { key: currentYear, value: currentYear },
+    { key: currentYear + 1, value: currentYear + 1 },
   ];
 
-  const monthOptions = () => {
-    return months.map((month) => ({
-      key: month.key,
-      value: month.value,
-      text: month.key,
-    }));
-  };
-
-  const findCurrentMonthKey = (
-    objs: Array<{ key: string; value: number }>,
-    value: number
-  ) => {
-    return objs.find((obj) => obj.value === value)?.key;
-  };
-
   const changeYear = (e: any, data: any) => {
-    const year = data.value;
+    const year = data.props.value;
     setSelectedYear(year);
     calcDate(year, selectedMonth);
   };
 
   const changeMonth = (e: any, data: any) => {
-    const month = data.value;
+    const month = data.props.value;
     setSelectedMonth(month);
     calcDate(selectedYear, month);
   };
@@ -285,6 +239,20 @@ export const Calendar = () => {
     height: calc(${squareWrapperHeight} + 200px);
   `;
 
+  const renderYearSelects = () => {
+    return years.map((year) => (
+      <MenuItem value={year.value}>{year.value}</MenuItem>
+    ));
+  };
+
+  const renderMonthSelects = () => {
+    let elements: object[] = [];
+    Constant.months.forEach((value: string, key: number) => {
+      elements.push(<MenuItem value={key}>{value}</MenuItem>);
+    });
+    return elements;
+  };
+
   return (
     <div style={backgroundImageStyle}>
       <Title style={{ paddingTop: "74px" }}>Create your calendar.</Title>
@@ -294,28 +262,27 @@ export const Calendar = () => {
           <SubTitle>Select the date.</SubTitle>
           <ButtonsWrapper>
             <SelectYearWrapper>
-              <SelectTitle>Year</SelectTitle>
-              <Menu compact>
-                <Dropdown
-                  options={yearOptions()}
-                  value={selectedYear}
-                  onChange={changeYear}
-                  simple
-                  item
-                />
-              </Menu>
+              <FormControl fullWidth>
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                  Year
+                </InputLabel>
+                <Select defaultValue={selectedYear} onChange={changeYear}>
+                  {renderYearSelects()}
+                </Select>
+              </FormControl>
             </SelectYearWrapper>
             <SelectMonthWrapper>
-              <SelectTitle>Month</SelectTitle>
-              <Menu compact>
-                <Dropdown
-                  options={monthOptions()}
-                  value={selectedMonth}
+              <FormControl fullWidth>
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                  Month
+                </InputLabel>
+                <Select
+                  defaultValue={selectedMonth}
                   onChange={changeMonth}
-                  simple
-                  item
-                />
-              </Menu>
+                >
+                  {renderMonthSelects()}
+                </Select>
+              </FormControl>
             </SelectMonthWrapper>
           </ButtonsWrapper>
           <PrintOutButtonWrapper>
@@ -333,7 +300,7 @@ export const Calendar = () => {
             <MonthInfoWrapper>
               <Month id="month">{selectedMonth}</Month>
               <Year>
-                {findCurrentMonthKey(months, selectedMonth)} {selectedYear}
+                {Constant.months.get(selectedMonth)} {selectedYear}
               </Year>
             </MonthInfoWrapper>
             <DayOfTheWeek />

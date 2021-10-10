@@ -1,0 +1,25 @@
+export const Constant = {
+  months: new Map<number, string>([
+    [1, "January"],
+    [2, "February"],
+    [3, "March"],
+    [4, "April"],
+    [5, "May"],
+    [6, "June"],
+    [7, "July"],
+    [8, "August"],
+    [9, "September"],
+    [10, "October"],
+    [11, "November"],
+    [12, "December"],
+  ]),
+  dayOfTheWeek: new Map<string, string>([
+    ["mon", "MON"],
+    ["tue", "TUE"],
+    ["wed", "WED"],
+    ["thu", "THU"],
+    ["fri", "FRI"],
+    ["sat", "SAT"],
+    ["sun", "SUN"],
+  ]),
+};
