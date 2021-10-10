@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Constant } from "./Constant";
 
 export const DayOfTheWeek = () => {
   const Wrapper = styled("div")`
@@ -24,20 +25,15 @@ export const DayOfTheWeek = () => {
   `;
 
   const renderDayOfTheWeek = () => {
-    const dayOfTheWeek = [
-      { key: "mon", value: "MON" },
-      { key: "tue", value: "TUE" },
-      { key: "wed", value: "WED" },
-      { key: "thu", value: "THU" },
-      { key: "fri", value: "FRI" },
-      { key: "sat", value: "SAT" },
-      { key: "sun", value: "SUN" },
-    ];
-    return dayOfTheWeek.map((month) => (
-      <Wrapper key={month.key}>
-        <Day key={month.key}>{month.value}</Day>
-      </Wrapper>
-    ));
+    let elements: object[] = [];
+    Constant.dayOfTheWeek.forEach((value: string, key: string) => {
+      elements.push(
+        <Wrapper key={key}>
+          <Day key={key}>{value}</Day>
+        </Wrapper>
+      );
+    });
+    return elements;
   };
 
   return (

@@ -13,34 +13,11 @@ export const Squares: FC<Props> = (chunkedDates) => {
     height: 102.5px;
   `;
 
-  const Row = styled("div")`
-    display: flex;
-    flex-direction: row;
-  `;
-
   const Date = styled("div")`
     top: 80px;
     left: 80px;
     position: relative;
   `;
-
-  const datesArray = () => {
-    if (!chunkedDates["chunkedDates"]["chunked"]) {
-      return [[]];
-    }
-
-    return chunkedDates["chunkedDates"]["chunked"];
-  };
-
-  const renderRows = () => {
-    return (
-      <>
-        {datesArray().map((dates: any, i: number) => (
-          <Row key={i}>{renderSquares(dates)}</Row>
-        ))}
-      </>
-    );
-  };
 
   const renderSquares = (dates: any) => {
     return (
@@ -54,5 +31,5 @@ export const Squares: FC<Props> = (chunkedDates) => {
     );
   };
 
-  return <>{renderRows()}</>;
+  return <>{renderSquares(chunkedDates)}</>;
 };
