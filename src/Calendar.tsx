@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Squares } from "./Squares";
+import { Rows } from "./Rows";
 import { DayOfTheWeek } from "./DayOfTheWeek";
 import styled from "@emotion/styled";
 import { jsPDF } from "jspdf";
@@ -55,7 +55,7 @@ export const Calendar = () => {
     margin-bottom: 23px;
   `;
 
-  const SquaresWrapper = styled("div")`
+  const RowsWrapper = styled("div")`
     margin: 0 36px 20px 36px;
     border-left: 1px solid #898989;
     border-top: 1px solid #898989;
@@ -304,9 +304,9 @@ export const Calendar = () => {
               </Year>
             </MonthInfoWrapper>
             <DayOfTheWeek />
-            <SquaresWrapper id="squares-wrapper">
-              <Squares chunkedDates={dates} />
-            </SquaresWrapper>
+            <RowsWrapper id="squares-wrapper">
+              <Rows chunkedDates={dates} />
+            </RowsWrapper>
           </CalendarContent>
         </Right>
       </Content>
