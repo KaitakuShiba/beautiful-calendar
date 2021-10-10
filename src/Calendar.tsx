@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Squares } from "./Square";
+import { Squares } from "./Squares";
 import { DayOfTheWeek } from "./DayOfTheWeek";
 import styled from "@emotion/styled";
 import { jsPDF } from "jspdf";
